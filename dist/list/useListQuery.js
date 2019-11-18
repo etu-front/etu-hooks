@@ -1,42 +1,47 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { map, forEach, isEqual, isEmpty } from 'lodash';
-import Router from 'umi/router';
-import qs from 'querystring';
-import useFilter from './useFilter';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const lodash_1 = require("lodash");
+const router_1 = __importDefault(require("umi/router"));
+const querystring_1 = __importDefault(require("querystring"));
+const useFilter_1 = __importDefault(require("./useFilter"));
 // import Router, { NextRouter } from 'next/router'
-import usePage from './usePage';
+const usePage_1 = __importDefault(require("./usePage"));
 // Cache Pool
 const CACHE_MAP = {};
 const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultFilter = {}, onError, validFilterKeys = [], cacheKey, routerSync = false }) => {
-    const { pagination, changePage, changePageSize } = usePage(defaultPage, defaultPageSize, routerSync);
-    const { filter, changeFilter } = useFilter(defaultFilter, validFilterKeys, routerSync);
+    const { pagination, changePage, changePageSize } = usePage_1.default(defaultPage, defaultPageSize, routerSync);
+    const { filter, changeFilter } = useFilter_1.default(defaultFilter, validFilterKeys, routerSync);
     const initData = {
         loading: true,
         pageInfo: { ...pagination, count: 0 },
         results: [],
         ...CACHE_MAP[cacheKey]
     };
-    const [data, setData] = useState(initData);
-    const setLoading = useCallback((loading) => setData(d => ({ ...d, loading })), []);
-    const errorHandler = useCallback(err => {
+    const [data, setData] = react_1.useState(initData);
+    const setLoading = react_1.useCallback((loading) => setData(d => ({ ...d, loading })), []);
+    const errorHandler = react_1.useCallback(err => {
         setLoading(false);
         if (onError) {
             onError(err);
         }
         console.error(err);
     }, []);
-    const filterRef = useRef(filter);
+    const filterRef = react_1.useRef(filter);
     const fetchData = () => {
         if (cacheKey && CACHE_MAP[cacheKey])
             return;
         // 当过滤器有改变时,页码 page 自动切换到第一页
-        const filterChanged = !isEqual(filterRef.current, filter);
+        const filterChanged = !lodash_1.isEqual(filterRef.current, filter);
         filterRef.current = filter;
         if (filterChanged && pagination.page !== 1)
             return changePage(1);
         // 请求数据
         setLoading(true);
-        apiCall({ ...pagination }, isEmpty(filter) ? undefined : map(filter, (value, field) => ({ field, value })))
+        apiCall({ ...pagination }, lodash_1.isEmpty(filter) ? undefined : lodash_1.map(filter, (value, field) => ({ field, value })))
             .then((resp) => {
             const respData = { ...resp, loading: false, loaded: true };
             if (cacheKey) {
@@ -46,13 +51,13 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
         })
             .catch(errorHandler);
     };
-    useEffect(fetchData, [pagination, filter]);
+    react_1.useEffect(fetchData, [pagination, filter]);
     // 手动更新 page filter 路由跳转
-    useEffect(() => {
+    react_1.useEffect(() => {
         // 是否同步路由 url
         if (!routerSync)
             return;
-        const { page: queryPage = 1, pageSize: queryPageSize = defaultPageSize, ...restQuery } = qs.parse(window.location.search.split('?')[1]);
+        const { page: queryPage = 1, pageSize: queryPageSize = defaultPageSize, ...restQuery } = querystring_1.default.parse(window.location.search.split('?')[1]);
         let query = {};
         // filter 处理
         const oldFilter = {};
@@ -61,13 +66,13 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
             if (typeof restQuery[k] !== 'undefined')
                 oldFilter[k] = restQuery[k];
         });
-        forEach(restQuery, (v, k) => {
+        lodash_1.forEach(restQuery, (v, k) => {
             if (!validFilterKeys.includes(k))
                 otherQuery[k] = v;
         });
         const isPageChanged = Number(queryPage) !== pagination.page;
         const isPageSizeChanged = Number(queryPageSize) !== pagination.pageSize;
-        const isFilterChanged = !isEqual(oldFilter, filter);
+        const isFilterChanged = !lodash_1.isEqual(oldFilter, filter);
         // 没有任何改变
         if (!isFilterChanged && !isPageChanged && !isPageSizeChanged)
             return;
@@ -93,13 +98,13 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
         if (Number(query.page) === 1)
             delete query.page;
         // 更新路由
-        Router.push({ pathname: window.location.pathname, query });
+        router_1.default.push({ pathname: window.location.pathname, query });
     }, [pagination, filter]);
     // 浏览器路由变化
-    useEffect(() => {
+    react_1.useEffect(() => {
         if (!routerSync)
             return;
-        const { page: queryPage = 1, ...restQuery } = qs.parse(window.location.search.replace('?', ''));
+        const { page: queryPage = 1, ...restQuery } = querystring_1.default.parse(window.location.search.replace('?', ''));
         // page
         if (Number(queryPage) !== pagination.page) {
             changePage(Number(queryPage));
@@ -110,7 +115,7 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
             if (typeof restQuery[k] !== 'undefined')
                 newFilter[k] = restQuery[k];
         });
-        if (!isEqual(newFilter, filter))
+        if (!lodash_1.isEqual(newFilter, filter))
             changeFilter(newFilter);
     }, [window.location.href]);
     return {
@@ -127,5 +132,5 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
         refresh: fetchData
     };
 };
-export default useListQuery;
+exports.default = useListQuery;
 //# sourceMappingURL=useListQuery.js.map

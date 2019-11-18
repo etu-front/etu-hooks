@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
 /**
  * media query
  * @param query '(max-width: 600px)'
  */
 const useMedia = (query) => {
-    const [state, setState] = useState(false);
-    useEffect(() => {
+    const [state, setState] = react_1.useState(false);
+    react_1.useEffect(() => {
         let mounted = true;
         const mql = window.matchMedia(query);
         const onChange = () => {
@@ -22,5 +24,5 @@ const useMedia = (query) => {
     }, [query]);
     return state;
 };
-export default useMedia;
+exports.default = useMedia;
 //# sourceMappingURL=useMedia.js.map

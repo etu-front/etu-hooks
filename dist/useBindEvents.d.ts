@@ -7,5 +7,5 @@ interface BindEvent {
  * @param events BindEvent
  * @param _target 默认
  */
-declare const useBindEvents: (events?: BindEvent | BindEvent[] | undefined, _target?: Document | HTMLElement | undefined) => void;
+declare const useBindEvents: (events?: BindEvent | BindEvent[] | undefined, _target?: HTMLElement | Document | undefined) => void;
 export default useBindEvents;

@@ -1,4 +1,6 @@
-import { useEffect, useCallback } from 'react';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
 /**
  * 对 dom 或 document 绑定事件
  * @param events BindEvent
@@ -6,17 +8,17 @@ import { useEffect, useCallback } from 'react';
  */
 const useBindEvents = (events, _target) => {
     const target = _target || (typeof window !== 'undefined' ? window.document : null);
-    const addEvent = useCallback((name, handler) => {
+    const addEvent = react_1.useCallback((name, handler) => {
         if (!name || !handler || !target)
             return;
         target.addEventListener(name, handler);
     }, [target]);
-    const removeEvent = useCallback((name, handler) => {
+    const removeEvent = react_1.useCallback((name, handler) => {
         if (!name || !handler || !target)
             return;
         target.removeEventListener(name, handler);
     }, [target]);
-    useEffect(() => {
+    react_1.useEffect(() => {
         if (!events || !target)
             return;
         if (Array.isArray(events)) {
@@ -32,5 +34,5 @@ const useBindEvents = (events, _target) => {
         return addEvent(events.name, events.handler);
     }, []);
 };
-export default useBindEvents;
+exports.default = useBindEvents;
 //# sourceMappingURL=useBindEvents.js.map

@@ -1,5 +1,10 @@
-import { useEffect, useState } from 'react';
-import throttle from 'lodash/throttle';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const throttle_1 = __importDefault(require("lodash/throttle"));
 function getSize() {
     if (typeof window === 'undefined') {
         return {
@@ -21,9 +26,9 @@ function getSize() {
  * @param resize 窗口 resize 时 是否重新计算
  */
 const useWindowSize = (resize = true) => {
-    const [windowSize, setWindowSize] = useState(getSize());
-    const handleResize = throttle(() => setWindowSize(getSize()), 200);
-    useEffect(() => {
+    const [windowSize, setWindowSize] = react_1.useState(getSize());
+    const handleResize = throttle_1.default(() => setWindowSize(getSize()), 200);
+    react_1.useEffect(() => {
         if (!resize)
             return;
         window.addEventListener('resize', handleResize);
@@ -31,5 +36,5 @@ const useWindowSize = (resize = true) => {
     }, []);
     return windowSize;
 };
-export default useWindowSize;
+exports.default = useWindowSize;
 //# sourceMappingURL=useWindowSize.js.map

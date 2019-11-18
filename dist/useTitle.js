@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
 /**
  * 设置 document.title
  * @param title
  * @param useReset 组件在 unmount 后 document.title 是否重置为上一次 title
  */
 const useTitle = (title, useReset) => {
-    useEffect(() => {
+    react_1.useEffect(() => {
         let lastTitle = '';
         if (document.title !== title) {
             lastTitle = document.title;
@@ -18,9 +20,9 @@ const useTitle = (title, useReset) => {
         };
     }, [title]);
 };
-export const DocumentTitle = props => {
+exports.DocumentTitle = props => {
     useTitle(props.title, props.useReset);
     return props.children || null;
 };
-export default useTitle;
+exports.default = useTitle;
 //# sourceMappingURL=useTitle.js.map

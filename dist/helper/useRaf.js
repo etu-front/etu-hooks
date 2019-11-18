@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
 /**
  * Requested Animation Frame
  */
 const useRaf = (ms = 1e12, delay = 0) => {
-    const [elapsed, set] = useState(0);
-    useEffect(() => {
+    const [elapsed, set] = react_1.useState(0);
+    react_1.useEffect(() => {
         let raf;
         let timerStop;
         let start = 0;
@@ -34,5 +36,5 @@ const useRaf = (ms = 1e12, delay = 0) => {
     }, [ms, delay]);
     return elapsed;
 };
-export default useRaf;
+exports.default = useRaf;
 //# sourceMappingURL=useRaf.js.map

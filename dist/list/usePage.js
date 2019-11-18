@@ -1,16 +1,21 @@
-import { useCallback, useState } from 'react';
-import { get } from 'lodash';
-import qs from 'querystring';
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_1 = require("react");
+const lodash_1 = require("lodash");
+const querystring_1 = __importDefault(require("querystring"));
 const usePage = (defaultPage, defaultPageSize, routerSync) => {
     let p = defaultPage;
     let psize = defaultPageSize;
     if (routerSync) {
-        const query = qs.parse(window.location.search.slice(1));
-        p = Number(get(query, 'page', defaultPage));
-        psize = Number(get(query, 'pageSize', defaultPageSize));
+        const query = querystring_1.default.parse(window.location.search.slice(1));
+        p = Number(lodash_1.get(query, 'page', defaultPage));
+        psize = Number(lodash_1.get(query, 'pageSize', defaultPageSize));
     }
-    const [pagination, setPagination] = useState({ page: p, pageSize: psize });
-    const changePage = useCallback((newPage) => {
+    const [pagination, setPagination] = react_1.useState({ page: p, pageSize: psize });
+    const changePage = react_1.useCallback((newPage) => {
         if (newPage === pagination.page)
             return;
         setPagination({ page: newPage, pageSize: pagination.pageSize });
@@ -29,5 +34,5 @@ const usePage = (defaultPage, defaultPageSize, routerSync) => {
         changePageSize
     };
 };
-export default usePage;
+exports.default = usePage;
 //# sourceMappingURL=usePage.js.map
