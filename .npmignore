@@ -1,0 +1,15 @@
+CONTRIBUTING.md
+coverage
+.vscode
+.idea
+jest.config.js
+__test__
+node_modules
+src
+.travis.yml
+.babelrc
+.editorconfig
+.eslintrc.yml
+.prettierrc
+stats.json
+webpack.config.js

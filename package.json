@@ -1,0 +1,33 @@
+{
+  "name": "@etu/hooks",
+  "version": "1.0.0",
+  "license": "ISC",
+  "description": "hooks of etu",
+  "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:etu-front/etu-hooks.git"
+  },
+  "scripts": {
+    "dev": "npm run build -- -w",
+    "build": "tsc --build tsconfig.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "handy",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.148",
+    "@types/node": "^12.12.8",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
+    "eslint-plugin-react": "^7.16.0",
+    "typescript-eslint": "0.0.1-alpha.0"
+  }
+}
