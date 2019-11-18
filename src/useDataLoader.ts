@@ -33,6 +33,13 @@ function reducer<T>(state: State<T>, action: Action): State<T> {
         loading: false
       }
     case 'update':
+      const { data } = action.payload!
+      if (data.constructor.name === 'Array') {
+        return {
+          ...state,
+          data
+        }
+      }
       return {
         ...state,
         data: {
@@ -46,7 +53,7 @@ function reducer<T>(state: State<T>, action: Action): State<T> {
 }
 
 type Reverse<T> = (...args: any) => Promise<T>
-type ReturnType<T> = State<T> & { retry: () => void, update: (data: Partial<T>) => void }
+type ReturnType<T> = State<T> & { retry: () => void; update: (data: Partial<T>) => void }
 
 function useDataLoader<T>(getData: Reverse<T>, ...args: any): ReturnType<T> {
   const [nonce, setNonce] = useState(Date.now())
@@ -57,29 +64,26 @@ function useDataLoader<T>(getData: Reverse<T>, ...args: any): ReturnType<T> {
     loaded: false
   }) as [State<T>, Dispatch<Action>]
 
-  useEffect(
-    () => {
-      let cancel = false
-      dispatch({ type: 'get' })
-      getData(...args)
-        .then((data: any) => {
-          if (cancel) return
-          if (data.errors && data.errors.length) {
-            return dispatch({ type: 'error', payload: { error: data.errors[0] } })
-          }
-          dispatch({ type: 'success', payload: { data } })
-        })
-        .catch((error: any) => {
-          if (cancel) return
-          dispatch({ type: 'error', payload: { error } })
-        })
+  useEffect(() => {
+    let cancel = false
+    dispatch({ type: 'get' })
+    getData(...args)
+      .then((data: any) => {
+        if (cancel) return
+        if (data.errors && data.errors.length) {
+          return dispatch({ type: 'error', payload: { error: data.errors[0] } })
+        }
+        dispatch({ type: 'success', payload: { data } })
+      })
+      .catch((error: any) => {
+        if (cancel) return
+        dispatch({ type: 'error', payload: { error } })
+      })
 
-      return () => {
-        cancel = true
-      }
-    },
-    [nonce, ...args],
-  )
+    return () => {
+      cancel = true
+    }
+  }, [nonce, ...args])
 
   const retry = () => setNonce(Date.now())
 
