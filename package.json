@@ -1,6 +1,6 @@
 {
   "name": "@etu/hooks",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "ISC",
   "description": "hooks of etu",
   "main": "./dist/index.js",
@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "npm run build -- -w",
     "build": "tsc --build tsconfig.json",
-    "pub": "npm publish --access=public",
+    "pub": "npm run build && node ./scripts/publish.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "handy",
