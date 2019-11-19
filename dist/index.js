@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var useTitle_1 = require("./useTitle");
 exports.useTitle = useTitle_1.default;
+exports.DocumentTitle = useTitle_1.DocumentTitle;
 var useBindEvents_1 = require("./useBindEvents");
 exports.useBindEvents = useBindEvents_1.default;
 var useDataLoader_1 = require("./useDataLoader");

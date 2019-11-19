@@ -24,5 +24,6 @@ exports.DocumentTitle = props => {
     useTitle(props.title, props.useReset);
     return props.children || null;
 };
+useTitle.DocumentTitle = exports.DocumentTitle;
 exports.default = useTitle;
 //# sourceMappingURL=useTitle.js.map
