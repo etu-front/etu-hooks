@@ -1,4 +1,4 @@
-export { default as useTitle } from './useTitle'
+export { default as useTitle, DocumentTitle } from './useTitle'
 export { default as useBindEvents } from './useBindEvents'
 export { default as useDataLoader } from './useDataLoader'
 export { default as useWindowSize } from './useWindowSize'

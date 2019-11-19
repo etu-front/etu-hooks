@@ -27,4 +27,7 @@ export const DocumentTitle: FC<IProps> = props => {
   useTitle(props.title, props.useReset)
   return props.children as ReactElement || null
 }
+
+useTitle.DocumentTitle = DocumentTitle
+
 export default useTitle

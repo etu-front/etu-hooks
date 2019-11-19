@@ -5,11 +5,16 @@ coverage
 jest.config.js
 __test__
 node_modules
+scripts
 src
 .travis.yml
 .babelrc
 .editorconfig
 .eslintrc.yml
-.prettierrc
+.prettierrc.js
+.prettierignore
+.eslintrc.js
+.eslintignore
+tsconfig.json
 stats.json
 webpack.config.js
