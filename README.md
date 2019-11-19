@@ -14,8 +14,7 @@ $ npm run dev
 ```
 ### 发布
 ```bash
-$ npm run build
-$ npm publish --access=public
+$ npm run pub
 ```
 
 ## Git 提交 emoji
