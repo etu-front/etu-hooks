@@ -66,7 +66,7 @@ const publish = () => {
       return process.exit(0)
     }
     console.log(stdout)
-    console.log('开始成功！')
+    console.log('发布成功！')
     process.exit(0)
   })
 }
