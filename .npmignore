@@ -15,6 +15,5 @@ src
 .prettierignore
 .eslintrc.js
 .eslintignore
-tsconfig.json
 stats.json
 webpack.config.js

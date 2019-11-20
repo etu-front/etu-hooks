@@ -11,7 +11,7 @@ const querystring_1 = __importDefault(require("querystring"));
 const useFilter = (defaultFilter = {}, validFilterKeys = [], routerSync) => {
     let f = defaultFilter;
     if (routerSync) {
-        f = { ...defaultFilter };
+        f = Object.assign({}, defaultFilter);
         const query = querystring_1.default.parse(window.location.search.slice(1));
         validFilterKeys.forEach(k => {
             if (typeof query[k] !== 'undefined')
@@ -34,7 +34,7 @@ const useFilter = (defaultFilter = {}, validFilterKeys = [], routerSync) => {
             });
         }
         else {
-            query = { ...fields };
+            query = Object.assign({}, fields);
         }
         setFilter(query);
     }, [filter]);

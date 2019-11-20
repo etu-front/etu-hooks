@@ -4,36 +4,17 @@ const react_1 = require("react");
 function reducer(state, action) {
     switch (action.type) {
         case 'get':
-            return { ...state, loading: true };
+            return Object.assign(Object.assign({}, state), { loading: true });
         case 'success':
-            return {
-                ...state,
-                data: action.payload.data,
-                error: null,
-                loading: false,
-                loaded: true
-            };
+            return Object.assign(Object.assign({}, state), { data: action.payload.data, error: null, loading: false, loaded: true });
         case 'error':
-            return {
-                ...state,
-                error: action.payload.error,
-                loading: false
-            };
+            return Object.assign(Object.assign({}, state), { error: action.payload.error, loading: false });
         case 'update':
             const { data } = action.payload;
             if (data.constructor.name === 'Array') {
-                return {
-                    ...state,
-                    data
-                };
+                return Object.assign(Object.assign({}, state), { data });
             }
-            return {
-                ...state,
-                data: {
-                    ...state.data,
-                    ...action.payload.data
-                }
-            };
+            return Object.assign(Object.assign({}, state), { data: Object.assign(Object.assign({}, state.data), action.payload.data) });
         default:
             return state;
     }
@@ -69,11 +50,8 @@ function useDataLoader(getData, ...args) {
     }, [nonce, ...args]);
     const retry = () => setNonce(Date.now());
     const update = (data) => dispatch({ type: 'update', payload: { data } });
-    return {
-        ...state,
-        retry,
-        update
-    };
+    return Object.assign(Object.assign({}, state), { retry,
+        update });
 }
 exports.default = useDataLoader;
 //# sourceMappingURL=useDataLoader.js.map

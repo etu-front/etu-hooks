@@ -19,4 +19,6 @@ var useFilter_1 = require("./list/useFilter");
 exports.useFilter = useFilter_1.default;
 var useListQuery_1 = require("./list/useListQuery");
 exports.useListQuery = useListQuery_1.default;
+var useNProgress_1 = require("./useNProgress");
+exports.NProgress = useNProgress_1.default;
 //# sourceMappingURL=index.js.map

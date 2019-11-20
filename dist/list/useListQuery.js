@@ -1,4 +1,15 @@
 "use strict";
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -15,14 +26,9 @@ const CACHE_MAP = {};
 const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultFilter = {}, onError, validFilterKeys = [], cacheKey, routerSync = false }) => {
     const { pagination, changePage, changePageSize } = usePage_1.default(defaultPage, defaultPageSize, routerSync);
     const { filter, changeFilter } = useFilter_1.default(defaultFilter, validFilterKeys, routerSync);
-    const initData = {
-        loading: true,
-        pageInfo: { ...pagination, count: 0 },
-        results: [],
-        ...CACHE_MAP[cacheKey]
-    };
+    const initData = Object.assign({ loading: true, pageInfo: Object.assign(Object.assign({}, pagination), { count: 0 }), results: [] }, CACHE_MAP[cacheKey]);
     const [data, setData] = react_1.useState(initData);
-    const setLoading = react_1.useCallback((loading) => setData(d => ({ ...d, loading })), []);
+    const setLoading = react_1.useCallback((loading) => setData(d => (Object.assign(Object.assign({}, d), { loading }))), []);
     const errorHandler = react_1.useCallback(err => {
         setLoading(false);
         if (onError) {
@@ -41,9 +47,9 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
             return changePage(1);
         // 请求数据
         setLoading(true);
-        apiCall({ ...pagination }, lodash_1.isEmpty(filter) ? undefined : lodash_1.map(filter, (value, field) => ({ field, value })))
+        apiCall(Object.assign({}, pagination), lodash_1.isEmpty(filter) ? undefined : lodash_1.map(filter, (value, field) => ({ field, value })))
             .then((resp) => {
-            const respData = { ...resp, loading: false, loaded: true };
+            const respData = Object.assign(Object.assign({}, resp), { loading: false, loaded: true });
             if (cacheKey) {
                 CACHE_MAP[cacheKey] = respData;
             }
@@ -57,7 +63,7 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
         // 是否同步路由 url
         if (!routerSync)
             return;
-        const { page: queryPage = 1, pageSize: queryPageSize = defaultPageSize, ...restQuery } = querystring_1.default.parse(window.location.search.split('?')[1]);
+        const _a = querystring_1.default.parse(window.location.search.split('?')[1]), { page: queryPage = 1, pageSize: queryPageSize = defaultPageSize } = _a, restQuery = __rest(_a, ["page", "pageSize"]);
         let query = {};
         // filter 处理
         const oldFilter = {};
@@ -78,12 +84,12 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
             return;
         // 过滤器改变
         if (isFilterChanged) {
-            query = { ...otherQuery, ...filter };
+            query = Object.assign(Object.assign({}, otherQuery), filter);
             if (pagination.page !== 1 && !isPageChanged)
                 return changePage(1);
         }
         else {
-            query = { ...restQuery };
+            query = Object.assign({}, restQuery);
         }
         // 设置 page 和 pageSize
         query.pageSize = pagination.pageSize;
@@ -104,7 +110,7 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
     react_1.useEffect(() => {
         if (!routerSync)
             return;
-        const { page: queryPage = 1, ...restQuery } = querystring_1.default.parse(window.location.search.replace('?', ''));
+        const _a = querystring_1.default.parse(window.location.search.replace('?', '')), { page: queryPage = 1 } = _a, restQuery = __rest(_a, ["page"]);
         // page
         if (Number(queryPage) !== pagination.page) {
             changePage(Number(queryPage));
@@ -121,7 +127,7 @@ const useListQuery = ({ apiCall, defaultPage = 1, defaultPageSize = 10, defaultF
     return {
         response: data,
         results: data.results,
-        pageInfo: { ...data.pageInfo, ...pagination },
+        pageInfo: Object.assign(Object.assign({}, data.pageInfo), pagination),
         filter,
         // state and handlers
         loading: data.loading,

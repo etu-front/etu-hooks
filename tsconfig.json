@@ -2,12 +2,13 @@
   "compilerOptions": {
     "outDir": "./dist",
     "module": "commonjs",
-    "target": "esnext",
-    "lib": ["esnext", "dom"],
+    "target": "es6",
+    "lib": ["es6", "dom"],
     "sourceMap": true,
     "baseUrl": ".",
     "jsx": "react",
     "declaration": true,
+    "typeRoots": ["node_modules/@types"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
@@ -21,6 +22,6 @@
     // "target": "es5",                          /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017', 'ES2018', 'ES2019' or 'ESNEXT'. */
     // "module": "commonjs",
   },
-  "include": ["src"],
+  "include": ["src", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules", "dist"]
 }
