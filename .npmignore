@@ -3,6 +3,7 @@ coverage
 .vscode
 .idea
 jest.config.js
+tsconfig.json
 __test__
 node_modules
 scripts
