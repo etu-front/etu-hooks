@@ -1,6 +1,6 @@
 {
   "name": "@etu/hooks",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "ISC",
   "description": "hooks of etu",
   "main": "./dist/index.js",
