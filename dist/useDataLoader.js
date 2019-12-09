@@ -42,8 +42,7 @@ const getKey = (_key) => {
         }
     }
     else {
-        // 默认一个随机串，否则 useDataLoader 传 空 key 时， 会不请求数据
-        key = String(_key || Date.now() + '-' + Math.random());
+        key = String(_key || '');
     }
     return key;
 };
@@ -69,7 +68,7 @@ function useSWR(_key, getData, ...args) {
         }
     }, [key]);
     react_1.useEffect(() => {
-        if (!key)
+        if (!key && useCache)
             return;
         let cancel = false;
         dispatch({ type: 'get' });
