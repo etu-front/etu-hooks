@@ -19,15 +19,58 @@ function reducer(state, action) {
             return state;
     }
 }
-function useDataLoader(getData, ...args) {
+const __cache = new Map();
+function cacheGet(key) {
+    if (!key)
+        return undefined;
+    return __cache.get(key) || { data: undefined };
+}
+function cacheSet(key, value) {
+    return __cache.set(key, value);
+}
+function cacheClear(key) {
+    return __cache.delete(key);
+}
+const getKey = (_key) => {
+    let key;
+    if (typeof _key === 'function') {
+        try {
+            key = _key();
+        }
+        catch (err) {
+            key = '';
+        }
+    }
+    else {
+        // 默认一个随机串，否则 useDataLoader 传 空 key 时， 会不请求数据
+        key = String(_key || Date.now() + '-' + Math.random());
+    }
+    return key;
+};
+function useSWR(_key, getData, ...args) {
+    const useCache = !!_key;
+    const key = getKey(_key);
+    const keyRef = react_1.useRef(key);
     const [nonce, setNonce] = react_1.useState(Date.now());
     const [state, dispatch] = react_1.useReducer(reducer, {
-        data: undefined,
+        data: useCache ? (cacheGet(key) ? cacheGet(key).data : undefined) : undefined,
         error: undefined,
         loading: true,
         loaded: false
     });
+    const retry = () => setNonce(Date.now());
+    const update = (data) => dispatch({ type: 'update', payload: { data } });
     react_1.useEffect(() => {
+        if (!useCache)
+            return;
+        if (key !== keyRef.current) {
+            cacheClear(keyRef.current);
+            keyRef.current = key;
+        }
+    }, [key]);
+    react_1.useEffect(() => {
+        if (!key)
+            return;
         let cancel = false;
         dispatch({ type: 'get' });
         getData(...args)
@@ -37,6 +80,7 @@ function useDataLoader(getData, ...args) {
             if (data.errors && data.errors.length) {
                 return dispatch({ type: 'error', payload: { error: data.errors[0] } });
             }
+            useCache && cacheSet(key, { data, retry, update });
             dispatch({ type: 'success', payload: { data } });
         })
             .catch((error) => {
@@ -47,11 +91,13 @@ function useDataLoader(getData, ...args) {
         return () => {
             cancel = true;
         };
-    }, [nonce, ...args]);
-    const retry = () => setNonce(Date.now());
-    const update = (data) => dispatch({ type: 'update', payload: { data } });
+    }, [nonce, key, ...args]);
     return Object.assign(Object.assign({}, state), { retry,
         update });
+}
+exports.useSWR = useSWR;
+function useDataLoader(getData, ...args) {
+    return useSWR('', getData, ...args);
 }
 exports.default = useDataLoader;
 //# sourceMappingURL=useDataLoader.js.map
