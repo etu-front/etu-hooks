@@ -7,6 +7,7 @@ var useBindEvents_1 = require("./useBindEvents");
 exports.useBindEvents = useBindEvents_1.default;
 var useDataLoader_1 = require("./useDataLoader");
 exports.useDataLoader = useDataLoader_1.default;
+exports.useSWR = useDataLoader_1.useSWR;
 var useWindowSize_1 = require("./useWindowSize");
 exports.useWindowSize = useWindowSize_1.default;
 var helper_1 = require("./helper");
