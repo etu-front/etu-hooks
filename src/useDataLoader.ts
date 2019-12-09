@@ -80,8 +80,7 @@ const getKey = (_key: KeyArgs): string => {
       key = ''
     }
   } else {
-    // 默认一个随机串，否则 useDataLoader 传 空 key 时， 会不请求数据
-    key = String(_key || Date.now() + '-' + Math.random())
+    key = String(_key || '')
   }
   return key
 }
@@ -113,7 +112,7 @@ export function useSWR<T>(_key: KeyArgs, getData: Reverse<T>, ...args: any): Ret
   }, [key])
 
   useEffect(() => {
-    if (!key) return
+    if (!key && useCache) return
     let cancel = false
     dispatch({ type: 'get' })
     getData(...args)
